@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd 
-import numpy as np
 import matplotlib.pyplot as plt
-import os
 
 # initial opening to data
 file_path = '/Users/shanematsushima/Dev/CS352_Final_Project/files/USvideos.csv'
@@ -13,6 +11,8 @@ df = pd.DataFrame(df) # set df to a pandas dataframe
 # global variables
 bar_graph_width = 0
 bar_graph_height = 0
+
+plt.rcParams.update({'font.size': 25})
 
 # initial page config
 st.set_page_config(
@@ -31,8 +31,8 @@ def cs_sidebar():
     global bar_graph_width
     global bar_graph_height
     st.sidebar.header('Put files here (or something)')
-    bar_graph_width = st.sidebar.slider("bar graph width", 1, 1000, 10)
-    bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 1000, 10)
+    bar_graph_width = st.sidebar.slider("bar graph width", 1, 50, 1)
+    bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 50, 1)
     return None
 
 def cs_body():
@@ -49,7 +49,7 @@ def cs_body():
 
     st.markdown("""The following graph and dataframe displayed represent the number of videos 
                     each channel in this data set has produced over the time that the dataset
-                    was recorded. 
+                    was recorded. Due to the size of the data set, the graph will showcase the top 5 channels.
                 """)
 
     ################## Channel Count ##################
@@ -65,7 +65,7 @@ def cs_body():
     st.write(channel_data)  
 
     fig, ax = plt.subplots(figsize=(bar_graph_width, bar_graph_height))
-    ax.bar(channel_name, channel_count,width=1.0, tick_label='vertical')
+    ax.bar(channel_data['channel_name'].head(5), channel_data['channel_count'].head(5),width=0.5)
 
     st.pyplot(fig)
 
