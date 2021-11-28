@@ -31,8 +31,8 @@ def cs_sidebar():
     global bar_graph_width
     global bar_graph_height
     st.sidebar.header('Put files here (or something)')
-    bar_graph_width = st.sidebar.slider("bar graph width", 1, 50, 1)
-    bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 50, 1)
+    bar_graph_width = st.sidebar.slider("bar graph width", 1, 1000, 10)
+    bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 1000, 10)
     return None
 
 def cs_body():
@@ -52,6 +52,8 @@ def cs_body():
                     was recorded. 
                 """)
 
+    ################## Channel Count ##################
+
     channel_data = pd.DataFrame()
 
     channel_name= df['channel_title'].value_counts().keys().tolist()
@@ -67,13 +69,37 @@ def cs_body():
 
     st.pyplot(fig)
 
+    ####################################################
+
+    ##############
+    # The following analysis was found using the link bellow:
+    # https://www.kaggle.com/raj5kumar5/video-statistics
+    # This source was used as another way to analize the csv data given
+    ##############
 
 
+    st.subheader('Video Popularity Analysis')
+    st.markdown(""" The following data being visualized will be the top 10
+                    most popular videos in the dataset using a popularity formula 
+                    that follows: Popularity = (views + likes + comments - dislikes ) / 1000000.
+                """)
 
+    ################## Popularity Analysis ##################
 
-    # st.bar_chart(get_channel_count)
-    # st.write(df.loc[df['views'] == df['views'].max()])
+    df['popularity'] = (df['views'] + df['likes'] + df['comment_count'] - df['dislikes']) / 1000000
 
+    st.write(df.sort_values('popularity', ascending=False).head(10))
+
+    st.subheader('By Category')
+    st.markdown(""" The following data being visualized is top 5 videos in each category.
+                    This will be utilizing the popularity formula as the prior analysis of total popularity. 
+                """)
+    
+    top_cat_vid = (df[['category_id', 'channel_title', 'views', 'dislikes', 'comment_count', 'popularity']].sort_values('popularity', ascending=False).groupby('category_id'))
+    top_cat_vid = top_cat_vid.head(5).sort_values(['category_id', 'popularity'], ascending=[True, False]).copy()
+    top_cat_vid.reset_index(drop=True, inplace=True)
+
+    st.write(top_cat_vid)
 
 
     return None
