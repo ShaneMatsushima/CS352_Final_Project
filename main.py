@@ -48,9 +48,11 @@ def cs_sidebar():
     global bar_graph_width
     global bar_graph_height
 
+    # sidebar text
     st.sidebar.header('Sidebar Widgets')
     st.sidebar.subheader('Adjust graph size')
 
+    # creating slider for graph dimensions
     bar_graph_width = st.sidebar.slider("bar graph width", 1, 50, 20)
     bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 50, 20)
 
@@ -60,12 +62,11 @@ def cs_sidebar():
 ################## Main Body of Page ##################
 def cs_body():
 
-    # Display logo
+    # Display text
     st.image('/Users/shanematsushima/Dev/CS352_Final_Project/images/data_photo_header.png')
-    # display title
+
     st.title('CS352 Final Project (Streamlit + Pandas)')
 
-    #display text about the project
     st.markdown("""This projects purpose is to showcase the different applications of utilizing streamlit and pandas. 
                    The data being used as an example comes from video data in the US for YouTube videos. *The data used in this
                    project was from a dataset taken from 2017-2018. 
@@ -81,20 +82,18 @@ def cs_body():
 
     ################## Channel Count ##################
 
+    # create empty dataframe for info
     channel_data = pd.DataFrame()
 
-    channel_name= df['channel_title'].value_counts().keys().tolist()
-    channel_count = df['channel_title'].value_counts().tolist()
-
-    channel_data['channel_name'] = channel_name
-    channel_data['channel_count'] = channel_count
+    # grab info from original dataframe and place values in new dataframe
+    channel_data['channel_name'] = df['channel_title'].value_counts().keys().tolist()
+    channel_data['channel_count']  = df['channel_title'].value_counts().tolist()
 
     st.dataframe(channel_data)  
 
+    # create bar graph to display data
     fig, ax = plt.subplots(figsize=(bar_graph_width, bar_graph_height))
     ax.bar(channel_data['channel_name'].head(5), channel_data['channel_count'].head(5),width=0.5)
-
-     
 
     st.pyplot(fig)
 
@@ -113,6 +112,7 @@ def cs_body():
 
     ################## Popularity Analysis ##################
 
+    # create new column called popularity that is based on popularity formula implemented
     df['popularity'] = (df['views'] + df['likes'] + df['comment_count'] - df['dislikes']) / 1000000
 
     st.write(df.sort_values('popularity', ascending=False).head(10))
@@ -121,7 +121,7 @@ def cs_body():
     st.markdown(""" The following data being visualized is top 5 videos in each category.
                     This will be utilizing the popularity formula as the prior analysis of total popularity. 
                 """)
-    
+    # create new dataframe that grabs columns and finds top videos in each category
     top_cat_vid = (df[['category_id', 'channel_title', 'views', 'dislikes', 'comment_count', 'popularity']].sort_values('popularity', ascending=False).groupby('category_id'))
     top_cat_vid = top_cat_vid.head(5).sort_values(['category_id', 'popularity'], ascending=[True, False]).copy()
     top_cat_vid.reset_index(drop=True, inplace=True)
@@ -132,7 +132,7 @@ def cs_body():
     return None
 
 
-
+# run main function 
 if __name__ == '__main__':
     main()
 
