@@ -16,7 +16,7 @@ plt.rcParams.update({'font.size': 10})
 
 # initial page config
 st.set_page_config(
-     page_title='Streamlit cheat sheet',
+     page_title='CS352 Project',
      layout="wide",
      initial_sidebar_state="expanded",
 )
