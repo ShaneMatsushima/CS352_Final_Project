@@ -9,10 +9,10 @@ df = pd.read_csv(file_path, delimiter=',', low_memory=False)
 df = pd.DataFrame(df) # set df to a pandas dataframe 
 
 # global variables
-bar_graph_width = 0
-bar_graph_height = 0
+bar_graph_width = 20
+bar_graph_height = 20
 
-plt.rcParams.update({'font.size': 15})
+plt.rcParams.update({'font.size': 10})
 
 # initial page config
 st.set_page_config(
@@ -30,18 +30,23 @@ def main():
 def cs_sidebar():
     global bar_graph_width
     global bar_graph_height
-    st.sidebar.header('Put files here (or something)')
-    bar_graph_width = st.sidebar.slider("bar graph width", 1, 50, 1)
-    bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 50, 1)
+    st.sidebar.header('Sidebar Widgets')
+    st.sidebar.subheader('Adjust graph size')
+    bar_graph_width = st.sidebar.slider("bar graph width", 1, 50, 20)
+    bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 50, 20)
     return None
 
 def cs_body():
+
+    # Display logo
+    st.image('/Users/shanematsushima/Dev/CS352_Final_Project/images/data_photo_header.png')
     # display title
     st.title('CS352 Final Project (Streamlit + Pandas)')
 
     #display text about the project
     st.markdown("""This projects purpose is to showcase the different applications of utilizing streamlit and pandas. 
-                   The data being used as an example comes from video data in the US for YouTube videos.
+                   The data being used as an example comes from video data in the US for YouTube videos. *The data used in this
+                   project was from a dataset taken from 2017-2018. 
                    """)
     st.header('Data Visualization')
 
