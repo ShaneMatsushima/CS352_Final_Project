@@ -1,3 +1,14 @@
+##########################
+# CS352 Final Project : Visualizing youtube Trends with Pandas and Streamlit
+# Created by: Shane Matsushima
+# Date: 11/29/2021
+# This project was created to teach and present the power that Pandas and Streamlit have
+# when it comes to visualizing and analyzing data sets. This project uses the youtube trend 
+# dataset found on Kaggle as an example to what kind of data sets could be used in these data
+# analysis projects.
+##########################
+
+# Import libararies used
 import streamlit as st
 import pandas as pd 
 import matplotlib.pyplot as plt
@@ -12,7 +23,7 @@ df = pd.DataFrame(df) # set df to a pandas dataframe
 bar_graph_width = 20
 bar_graph_height = 20
 
-plt.rcParams.update({'font.size': 10})
+
 
 # initial page config
 st.set_page_config(
@@ -20,22 +31,33 @@ st.set_page_config(
      layout="wide",
      initial_sidebar_state="expanded",
 )
+plt.rcParams.update({'font.size': 10})
 
+
+################## Main Function ##################
 def main():
+
     cs_sidebar()
     cs_body()
 
     return None
 
+
+################## Sidebar ##################
 def cs_sidebar():
     global bar_graph_width
     global bar_graph_height
+
     st.sidebar.header('Sidebar Widgets')
     st.sidebar.subheader('Adjust graph size')
+
     bar_graph_width = st.sidebar.slider("bar graph width", 1, 50, 20)
     bar_graph_height = st.sidebar.slider("bar graph hieght", 1, 50, 20)
+
     return None
 
+
+################## Main Body of Page ##################
 def cs_body():
 
     # Display logo
@@ -76,12 +98,10 @@ def cs_body():
 
     st.pyplot(fig)
 
-    ####################################################
-
     ##############
     # The following analysis was found using the link bellow:
     # https://www.kaggle.com/raj5kumar5/video-statistics
-    # This source was used as another way to analize the csv data given
+    # This source was used as another way to analyze the csv data given
     ##############
 
 
@@ -108,14 +128,10 @@ def cs_body():
 
     st.dataframe(top_cat_vid)
 
-    ####################################################
-
 
     return None
 
 
-def get_likes():
-    return df['likes'].sort_values()
 
 if __name__ == '__main__':
     main()
