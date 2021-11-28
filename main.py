@@ -12,7 +12,7 @@ df = pd.DataFrame(df) # set df to a pandas dataframe
 bar_graph_width = 0
 bar_graph_height = 0
 
-plt.rcParams.update({'font.size': 25})
+plt.rcParams.update({'font.size': 15})
 
 # initial page config
 st.set_page_config(
@@ -62,10 +62,12 @@ def cs_body():
     channel_data['channel_name'] = channel_name
     channel_data['channel_count'] = channel_count
 
-    st.write(channel_data)  
+    st.dataframe(channel_data)  
 
     fig, ax = plt.subplots(figsize=(bar_graph_width, bar_graph_height))
     ax.bar(channel_data['channel_name'].head(5), channel_data['channel_count'].head(5),width=0.5)
+
+     
 
     st.pyplot(fig)
 
@@ -99,7 +101,9 @@ def cs_body():
     top_cat_vid = top_cat_vid.head(5).sort_values(['category_id', 'popularity'], ascending=[True, False]).copy()
     top_cat_vid.reset_index(drop=True, inplace=True)
 
-    st.write(top_cat_vid)
+    st.dataframe(top_cat_vid)
+
+    ####################################################
 
 
     return None
